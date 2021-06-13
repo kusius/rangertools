@@ -1,0 +1,44 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "label": "nmake Debug",
+            "type": "shell",
+            "command": "nmake /NOLOGO",
+            "options": {
+                "cwd": "${workspaceFolder}/build/debug/"
+            },
+            "problemMatcher": [
+                "$msCompile"
+            ]
+        },
+        {
+            "label": "nmake Release",
+            "type": "shell",
+            "command": "nmake /NOLOGO",
+            "options": {
+                "cwd": "${workspaceFolder}/build/release/"
+            },
+            "problemMatcher": [
+                "$msCompile"
+            ],
+            "group": "build"
+        },
+        {
+            "group": "none",
+            "label": "Setup cmake Debug",
+            "type": "shell",
+            "command": "cmake -G 'NMake Makefiles' -DCMAKE_BUILD_TYPE=debug ${workspaceFolder}/src",
+            "options": {
+                "cwd": "${workspaceFolder}/build/debug/"
+            },
+            "problemMatcher": []
+        }
+    ]
+}

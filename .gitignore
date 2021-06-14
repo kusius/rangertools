@@ -51,8 +51,4 @@ _deps
 *.svclog
 *.scc
 
-build/debug/*.ini
-build/debug/*.dll
-
-build/release/*.ini
-build/release/*.dll
+build/

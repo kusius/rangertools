@@ -29,5 +29,7 @@ void GLWindow::render(std::unique_ptr<ApplicationData> &application_data) {
 
 void GLWindow::on_close() { mIsRunning = false; }
 
-void GLWindow::on_resize(int width, int height) {}
+void GLWindow::on_resize(int width, int height) {
+  // TODO
+}
 } // namespace NWindow

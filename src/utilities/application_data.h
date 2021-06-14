@@ -21,7 +21,7 @@ template <NetworkMessage::type T> struct type : NetworkMessage {
   type() { message_type = T; }
 };
 
-// map TaskState values to JSON as strings
+// map NetworkMessage values to JSON as strings
 NLOHMANN_JSON_SERIALIZE_ENUM(NetworkMessage::type,
                              {
                                  {NetworkMessage::BASE, "BASE"},
@@ -33,12 +33,13 @@ NLOHMANN_JSON_SERIALIZE_ENUM(NetworkMessage::type,
 static void to_json(json &j, const NetworkMessage &m) {
   j = json{{"name", m.name},
            {"payload", m.payload},
-           {"message_type", NetworkMessage::BASE}};
+           {"message_type", m.message_type}};
 }
 
 static void from_json(const json &j, NetworkMessage &m) {
   j.at("name").get_to(m.name);
   j.at("payload").get_to(m.payload);
+  j.at("message_type").get_to(m.message_type);
 }
 
 // Definition of specific json message types

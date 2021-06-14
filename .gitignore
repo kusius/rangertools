@@ -50,5 +50,3 @@ _deps
 *.pidb
 *.svclog
 *.scc
-
-build/debug/*.dll

@@ -7,10 +7,17 @@ namespace NUI {
 
 NetToolPanel::NetToolPanel()
     : mShowAnotherWindow(false),
-      mClearColor(ImVec4(0.45f, 0.55f, 0.60f, 1.00f)) {}
+      mClearColor(ImVec4(0.45f, 0.55f, 0.60f, 1.00f)) {
+  mMenuItemName = "Network Tool";
+  mIsEnabled    = true;
+  mIsSelected   = false;
+}
 
 void NetToolPanel::render(std::unique_ptr<ApplicationData> &application_data) {
   {
+    if (!mIsSelected)
+      return;
+
     auto messages              = application_data->messages;
     unsigned int buttons_count = 9;
     ImVec2 button_size(40, 40);

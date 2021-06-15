@@ -1,5 +1,6 @@
 #include "render/opengl_context.h"
 #include "render/ui_context.h"
+#include "ui/main_menu_bar.h"
 #include "ui/nettool_panel.h"
 #include "window.h"
 #include <glad/glad.h>
@@ -15,7 +16,10 @@ public:
   GLWindow() : mIsRunning(true), mWindow(nullptr) {
     mRenderContext = std::make_unique<OpenGLContext>();
     mUIContext     = std::make_unique<UIContext>();
-    mNetToolPanel  = std::make_unique<NetToolPanel>();
+    mNetToolPanel  = std::make_shared<NetToolPanel>();
+    mMainMenuBar   = std::make_unique<MainMenuBar>();
+
+    mMainMenuBar->add_menu_item(mNetToolPanel);
   }
 
   ~GLWindow();
@@ -37,7 +41,9 @@ public:
 private:
   GLFWwindow *mWindow;
 
-  std::unique_ptr<NetToolPanel> mNetToolPanel;
+  std::shared_ptr<NetToolPanel> mNetToolPanel;
+
+  std::unique_ptr<MainMenuBar> mMainMenuBar;
 
   std::unique_ptr<UIContext> mUIContext;
 

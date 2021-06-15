@@ -9,8 +9,8 @@ public:
   virtual void set_native_window(void *window) = 0;
   virtual void on_close() = 0;
   virtual void on_resize(int width, int height) = 0;
-  int width;
-  int height;
+  int Width;
+  int Height;
   Vec4 clear_color;
   std::string title;
 };

@@ -14,6 +14,13 @@ static void on_window_close_callback(GLFWwindow *window) {
   pWindow->on_close();
 }
 
+static void on_window_resize_callback(GLFWwindow *window, int width,
+                                      int height) {
+  NWindow::IWindow *pWindow =
+      static_cast<NWindow::IWindow *>(glfwGetWindowUserPointer(window));
+  pWindow->on_resize(width, height);
+}
+
 bool OpenGLContext::init(NWindow::IWindow *window) {
   __super::init(window);
 
@@ -21,7 +28,7 @@ bool OpenGLContext::init(NWindow::IWindow *window) {
   if (!glfwInit())
     return false;
 
-  auto glWindow = glfwCreateWindow(window->width, window->height,
+  auto glWindow = glfwCreateWindow(window->Width, window->Height,
                                    window->title.c_str(), nullptr, nullptr);
   window->set_native_window(glWindow);
 
@@ -36,6 +43,7 @@ bool OpenGLContext::init(NWindow::IWindow *window) {
 
   glfwSetErrorCallback(glfw_error_callback);
   glfwSetWindowCloseCallback(glWindow, on_window_close_callback);
+  glfwSetWindowSizeCallback(glWindow, on_window_resize_callback);
   glfwMakeContextCurrent(glWindow);
   glfwSwapInterval(1); // vsync
 
@@ -50,7 +58,7 @@ bool OpenGLContext::init(NWindow::IWindow *window) {
 }
 
 void OpenGLContext::pre_render() {
-  glViewport(0, 0, mWindow->width, mWindow->height);
+  glViewport(0, 0, mWindow->Width, mWindow->Height);
   glClearColor(0.45f, 0.55f, 0.60f, 1.00f);
   glClear(GL_COLOR_BUFFER_BIT);
 }

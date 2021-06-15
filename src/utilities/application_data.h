@@ -78,7 +78,10 @@ struct FreeTextMessage : type<NetworkMessage::FREE_TXT> {
 
 class ApplicationData {
 public:
+  // Initialize application data state
   ApplicationData() { message_clicked = -1; };
+
+  // Network Tool data
   std::vector<NetworkMessage> messages{
       BlueForceMessage("custom paload"), EmergencyTroopsMessage(),
       EmergencyInjuredMessage(), FreeTextMessage()};

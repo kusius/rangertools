@@ -1,15 +1,14 @@
 #pragma once
 
 #include "imgui/imgui.h"
+#include "menu_item.h"
 #include "pch.h"
 #include "utilities/application_data.h"
-#include <string>
-#include <vector>
 
 using namespace NAppData;
 
 namespace NUI {
-class NetToolPanel {
+class NetToolPanel : public IMenuItem {
 public:
   NetToolPanel();
   void render(std::unique_ptr<ApplicationData> &application_data);

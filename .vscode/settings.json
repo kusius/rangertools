@@ -56,5 +56,7 @@
         "valarray": "cpp",
         "xhash": "cpp",
         "xtree": "cpp"
-    }
+    },
+    "cmake.sourceDirectory": "${workspaceFolder}/src",
+    "cmake.configureOnOpen": true
 }

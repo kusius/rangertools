@@ -1,5 +1,4 @@
 #include "nettool_panel.h"
-#include <iostream>
 
 using namespace NAppData;
 
@@ -18,10 +17,14 @@ void NetToolPanel::render(std::unique_ptr<ApplicationData> &application_data) {
   if (!mIsSelected)
     return;
 
-  auto messages     = application_data->messages;
-  int buttons_count = 9;
-  ImVec2 button_size(40, 40);
-  ImGui::Begin("NetTool");
+    // Input for UDP multicast address
+    ImGui::InputText("UDP Multicast address", application_data->multicast_ip, IM_ARRAYSIZE(application_data->multicast_ip));
+    ImGui::InputInt("UDP Multicast port", &(application_data->multicast_port));
+
+    // Buttons for different message types
+    for (int i = 0; i < messages.size(); ++i) {
+      ImGuiStyle &style = ImGui::GetStyle();
+      ImGui::PushID(i);
 
   if (ImGui::Button("Import from file")) {
     application_data->network_messages_from_json("messages.json");

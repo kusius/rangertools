@@ -89,6 +89,8 @@ public:
   int message_clicked;
 
   void network_messages_from_json(const char *path);
+  char multicast_ip[16] = {'\0'};
+  int multicast_port = 5555;
 };
 
 } // namespace NAppData

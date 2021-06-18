@@ -24,8 +24,10 @@ void UIContext::pre_render() {
   ImGui_ImplGlfw_NewFrame();
   ImGui::NewFrame();
 
+  #ifdef _DEBUG
   bool show_demo_window = true;
-  ImGui::ShowDemoWindow(&show_demo_window);
+    ImGui::ShowDemoWindow(&show_demo_window);
+  #endif
 }
 
 void UIContext::post_render() {

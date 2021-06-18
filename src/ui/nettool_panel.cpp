@@ -14,37 +14,39 @@ NetToolPanel::NetToolPanel()
 }
 
 void NetToolPanel::render(std::unique_ptr<ApplicationData> &application_data) {
-  {
-    if (!mIsSelected)
-      return;
 
-    auto messages              = application_data->messages;
-    unsigned int buttons_count = 9;
-    ImVec2 button_size(40, 40);
-    ImGui::Begin("NetTool");
+  if (!mIsSelected)
+    return;
 
-    for (int i = 0; i < messages.size(); ++i) {
-      ImGuiStyle &style = ImGui::GetStyle();
-      ImGui::PushID(i);
+  auto messages     = application_data->messages;
+  int buttons_count = 9;
+  ImVec2 button_size(40, 40);
+  ImGui::Begin("NetTool");
 
-      if (ImGui::Button(messages.at(i).name.c_str())) {
-        std::cout << "Pushed button " << i << " " << messages.at(i).payload
-                  << " " << messages.at(i).message_type << std::endl;
-        application_data->message_clicked = i;
-      }
+  if (ImGui::Button("Import from file")) {
+    application_data->network_messages_from_json("messages.json");
+  }
 
-      float last_button_x2 = ImGui::GetItemRectMax().x;
-      float next_button_x2 =
-          last_button_x2 + style.ItemSpacing.x + button_size.x;
-      float window_visible_x2 =
-          ImGui::GetWindowPos().x + ImGui::GetWindowContentRegionMax().x;
-      if (i + 1 < buttons_count && next_button_x2 < window_visible_x2)
-        ImGui::SameLine();
+  for (int i = 0; i < messages.size(); ++i) {
+    ImGuiStyle &style = ImGui::GetStyle();
+    ImGui::PushID(i);
 
-      ImGui::PopID();
+    if (ImGui::Button(messages.at(i).name.c_str())) {
+      std::cout << "Pushed button " << i << " " << messages.at(i).payload << " "
+                << messages.at(i).message_type << std::endl;
+      application_data->message_clicked = i;
     }
 
-    ImGui::End();
+    float last_button_x2 = ImGui::GetItemRectMax().x;
+    float next_button_x2 = last_button_x2 + style.ItemSpacing.x + button_size.x;
+    float window_visible_x2 =
+        ImGui::GetWindowPos().x + ImGui::GetWindowContentRegionMax().x;
+    if (i + 1 < buttons_count && next_button_x2 < window_visible_x2)
+      ImGui::SameLine();
+
+    ImGui::PopID();
   }
+
+  ImGui::End();
 }
 } // namespace NUI

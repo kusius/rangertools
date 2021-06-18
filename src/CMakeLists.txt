@@ -4,6 +4,10 @@ project(nettoolcpp)
 # external dependencies through fetchcontent
 include(FetchContent)
 
+add_custom_target(copy_assets
+    COMMAND ${CMAKE_COMMAND} -P ${CMAKE_CURRENT_LIST_DIR}/copy-assets.cmake
+)
+
 ## JSON
 FetchContent_Declare(json
   GIT_REPOSITORY https://github.com/ArthurSonzogni/nlohmann_json_cmake_fetchcontent
@@ -50,6 +54,9 @@ render/*.cpp)
 FILE(GLOB WINDOW_FILES
 window/*.cpp)
 
+FILE(GLOB UTILITIES_FILES
+utilities/*.cpp)
+
 FILE(GLOB UI_SOURCE_FILES
 ${THIRDPARTY_FOLDER_PATH}/include/imgui/*.cpp
 ui/*.cpp
@@ -61,6 +68,7 @@ application.cpp
 ${SYSTEM_FILES}
 ${RENDER_FILES}
 ${WINDOW_FILES}
+${UTILITIES_FILES}
 ${UI_SOURCE_FILES}
 ${GLAD_SOURCE_FILES}
 )
@@ -87,4 +95,8 @@ target_link_libraries(nettoolcpp
 set_target_properties(nettoolcpp PROPERTIES 
 LINK_FLAGS "/ENTRY:mainCRTStartup /SUBSYSTEM:WINDOWS")
 
+# C++17 standard because life is short
 target_compile_features(nettoolcpp PRIVATE cxx_std_17)
+
+# Copy assets from asset folder into binary directory
+add_dependencies(nettoolcpp copy_assets)

@@ -1,0 +1,27 @@
+[
+    {
+        "name": "POAWDPOKAW papopoa",
+        "payload": "some blue payload",
+        "message_type": "BASE"
+    },
+    {
+        "name": "GGG Force",
+        "payload": "some black payload",
+        "message_type": "BASE"
+    },
+    {
+        "name": "White Force",
+        "payload": "some white payload",
+        "message_type": "BASE"
+    },
+    {
+        "name": "Yellow Force",
+        "payload": "some yellow payload",
+        "message_type": "BASE"
+    },
+    {
+        "name": "The Force Awakens",
+        "payload": "the force is std::strong",
+        "message_type": "EMRG_INJ"
+    }
+]

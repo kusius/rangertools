@@ -1,6 +1,7 @@
 #pragma once
-#include "pch.h"
 #include "nlohmann/json.hpp"
+#include "pch.h"
+#include <sstream>
 
 using nlohmann::json;
 
@@ -83,9 +84,11 @@ public:
 
   // Network Tool data
   std::vector<NetworkMessage> messages{
-      BlueForceMessage("custom paload"), EmergencyTroopsMessage(),
+      BlueForceMessage("custom payload"), EmergencyTroopsMessage(),
       EmergencyInjuredMessage(), FreeTextMessage()};
   int message_clicked;
+
+  void network_messages_from_json(const char *path);
 };
 
 } // namespace NAppData

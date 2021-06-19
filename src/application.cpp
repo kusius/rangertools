@@ -13,4 +13,6 @@ void Application::loop() {
     mWindow->render(mApplicationData);
     mNetToolSystem->update(mApplicationData);
   }
+
+  mNetToolSystem->shutdown();
 }

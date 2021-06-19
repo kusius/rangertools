@@ -38,6 +38,7 @@ void GLWindow::on_resize(int width, int height) {
   mUIContext->pre_render();
 
   mMainMenuBar->render();
+
   mUIContext->post_render();
   mRenderContext->post_render();
 }

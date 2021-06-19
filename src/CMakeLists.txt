@@ -35,8 +35,6 @@ if(NOT glfw_POPULATED)
 	add_subdirectory(${glfw_SOURCE_DIR} ${glfw_BINARY_DIR})
 endif()
 
-
-
 # Main project configuration
 
 set(THIRDPARTY_FOLDER_PATH ${PROJECT_SOURCE_DIR}/../thirdparty)

@@ -87,10 +87,11 @@ public:
       BlueForceMessage("custom payload"), EmergencyTroopsMessage(),
       EmergencyInjuredMessage(), FreeTextMessage()};
   int message_clicked;
+  bool udp_sender_started = false;
 
   void network_messages_from_json(const char *path);
-  char multicast_ip[16] = {'\0'};
-  int multicast_port = 5555;
+  char multicast_ip[16] = "224.0.0.0";
+  int multicast_port    = 5555;
 };
 
 } // namespace NAppData

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "imgui/imgui.h"
+#include "ui_base.h"
 #include "menu_item.h"
 #include "pch.h"
 #include "utilities/application_data.h"

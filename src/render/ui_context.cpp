@@ -9,9 +9,6 @@ bool UIContext::init(NWindow::IWindow *window) {
   const char *glsl_version = "#version 130";
   ImGui::CreateContext();
 
-  // Setup Dear ImGui style
-  ImGui::StyleColorsDark();
-
   // Setup renderer backends
   ImGui_ImplGlfw_InitForOpenGL((GLFWwindow *)window->get_native_window(), true);
   ImGui_ImplOpenGL3_Init(glsl_version);
@@ -24,8 +21,10 @@ void UIContext::pre_render() {
   ImGui_ImplGlfw_NewFrame();
   ImGui::NewFrame();
 
+#ifdef _DEBUG
   bool show_demo_window = true;
   ImGui::ShowDemoWindow(&show_demo_window);
+#endif
 }
 
 void UIContext::post_render() {

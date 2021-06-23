@@ -1,5 +1,4 @@
 #include "nettool_panel.h"
-#include <iostream>
 
 using namespace NAppData;
 
@@ -14,26 +13,38 @@ NetToolPanel::NetToolPanel()
 }
 
 void NetToolPanel::render(std::unique_ptr<ApplicationData> &application_data) {
-
   if (!mIsSelected)
     return;
 
   auto messages     = application_data->messages;
   int buttons_count = 9;
   ImVec2 button_size(40, 40);
-  ImGui::Begin("NetTool");
+  ImGui::Begin("NetTool", &mIsSelected);
+
+  ImGui::Text("UDP multicast sender");
+  ImGui::SameLine();
+  ImGui::Checkbox("Start", &application_data->udp_sender_started);
+  ImGui::Separator();
+
+  // Input for UDP multicast address
+  int flags =
+      (application_data->udp_sender_started) ? ImGuiInputTextFlags_ReadOnly : 0;
+  ImGui::InputTextWithHint("UDP Multicast address", "192.168.1.1",
+                           application_data->multicast_ip,
+                           IM_ARRAYSIZE(application_data->multicast_ip), flags);
+  ImGui::InputInt("UDP Multicast port", &(application_data->multicast_port), 1,
+                  100, flags);
 
   if (ImGui::Button("Import from file")) {
     application_data->network_messages_from_json("messages.json");
   }
 
+  // Buttons for different message types
   for (int i = 0; i < messages.size(); ++i) {
     ImGuiStyle &style = ImGui::GetStyle();
     ImGui::PushID(i);
 
     if (ImGui::Button(messages.at(i).name.c_str())) {
-      std::cout << "Pushed button " << i << " " << messages.at(i).payload << " "
-                << messages.at(i).message_type << std::endl;
       application_data->message_clicked = i;
     }
 
@@ -47,6 +58,11 @@ void NetToolPanel::render(std::unique_ptr<ApplicationData> &application_data) {
     ImGui::PopID();
   }
 
+  ImGui::NewLine();
+  ImGui::Text("UDP multicast receiver");
+  ImGui::Separator();
+
   ImGui::End();
 }
+
 } // namespace NUI

@@ -27,8 +27,9 @@ void NetToolPanel::render(std::unique_ptr<ApplicationData> &application_data) {
   ImGui::Separator();
 
   // Input for UDP multicast address
-  int flags =
-      (application_data->udp_sender_started) ? ImGuiInputTextFlags_ReadOnly : 0;
+  int flags = (application_data->udp_sender_started)
+                  ? (ImGuiInputTextFlags_ReadOnly)
+                  : 0;
   ImGui::InputTextWithHint("UDP Multicast address", "192.168.1.1",
                            application_data->multicast_ip,
                            IM_ARRAYSIZE(application_data->multicast_ip), flags);

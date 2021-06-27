@@ -16,10 +16,20 @@ void NetToolPanel::render(std::unique_ptr<ApplicationData> &application_data) {
   if (!mIsSelected)
     return;
 
+  ImGui::Begin("NetTool", &mIsSelected);
+
+  make_udp_sender_ui(application_data);
+
+  make_udp_receiver_ui(application_data);
+
+  ImGui::End();
+}
+
+inline void NetToolPanel::make_udp_sender_ui(
+    std::unique_ptr<ApplicationData> &application_data) {
   auto messages     = application_data->messages;
   int buttons_count = 9;
   ImVec2 button_size(40, 40);
-  ImGui::Begin("NetTool", &mIsSelected);
 
   ImGui::Text("UDP multicast sender");
   ImGui::SameLine();
@@ -27,16 +37,30 @@ void NetToolPanel::render(std::unique_ptr<ApplicationData> &application_data) {
   ImGui::Separator();
 
   // Input for UDP multicast address
-  int flags =
-      (application_data->udp_sender_started) ? ImGuiInputTextFlags_ReadOnly : 0;
+  int flags = (application_data->udp_sender_started)
+                  ? (ImGuiInputTextFlags_ReadOnly)
+                  : 0;
   ImGui::InputTextWithHint("UDP Multicast address", "192.168.1.1",
                            application_data->multicast_ip,
                            IM_ARRAYSIZE(application_data->multicast_ip), flags);
   ImGui::InputInt("UDP Multicast port", &(application_data->multicast_port), 1,
                   100, flags);
 
+  // File dialog
   if (ImGui::Button("Import from file")) {
-    application_data->network_messages_from_json("messages.json");
+    ImGuiFileDialog::Instance()->OpenModal("ChooseFileDlgKey", "Choose File",
+                                           ".json", ".");
+  }
+
+  if (ImGuiFileDialog::Instance()->Display("ChooseFileDlgKey")) {
+    // action if OK
+    if (ImGuiFileDialog::Instance()->IsOk()) {
+      std::string filePathName = ImGuiFileDialog::Instance()->GetFilePathName();
+      application_data->network_messages_from_json(filePathName.c_str());
+    }
+
+    // close
+    ImGuiFileDialog::Instance()->Close();
   }
 
   // Buttons for different message types
@@ -57,12 +81,13 @@ void NetToolPanel::render(std::unique_ptr<ApplicationData> &application_data) {
 
     ImGui::PopID();
   }
+}
 
+inline void NetToolPanel::make_udp_receiver_ui(
+    std::unique_ptr<ApplicationData> &application_data) {
   ImGui::NewLine();
   ImGui::Text("UDP multicast receiver");
   ImGui::Separator();
-
-  ImGui::End();
 }
 
 } // namespace NUI

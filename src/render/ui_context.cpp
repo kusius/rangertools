@@ -1,4 +1,5 @@
 #include "ui_context.h"
+#include "fonts/cousine_regular.cpp"
 #include "imgui/imgui.h"
 #include "imgui/imgui_impl_glfw.h"
 #include "imgui/imgui_impl_opengl3.h"
@@ -12,6 +13,10 @@ bool UIContext::init(NWindow::IWindow *window) {
   // Setup renderer backends
   ImGui_ImplGlfw_InitForOpenGL((GLFWwindow *)window->get_native_window(), true);
   ImGui_ImplOpenGL3_Init(glsl_version);
+
+  // Load custom fonts
+  ImFont *font = ImGui::GetIO().Fonts->AddFontFromMemoryCompressedTTF(
+      cousine_regular_compressed_data, cousine_regular_compressed_size, 18);
 
   return true;
 }

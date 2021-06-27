@@ -76,7 +76,7 @@ include_directories(${PROJECT_SOURCE_DIR} ${THIRDPARTY_FOLDER_PATH}/include)
 link_directories(${THIRDPARTY_FOLDER_PATH}/bin)
 
 
-set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /nologo /Zi  /EHsc /wd4005 /D_DEBUG")
+set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /nologo /Zi  /EHsc /wd4005 /wd4996 /D_DEBUG")
 set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /nologo /Zi  /EHsc /O2")
 
 

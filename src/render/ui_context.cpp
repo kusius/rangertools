@@ -1,4 +1,5 @@
 #include "ui_context.h"
+#include "GLFW/glfw3.h"
 #include "fonts/cousine_regular.cpp"
 #include "imgui/imgui.h"
 #include "imgui/imgui_impl_glfw.h"
@@ -14,9 +15,9 @@ bool UIContext::init(NWindow::IWindow *window) {
   ImGui_ImplGlfw_InitForOpenGL((GLFWwindow *)window->get_native_window(), true);
   ImGui_ImplOpenGL3_Init(glsl_version);
 
-  // Load custom fonts
-  ImFont *font = ImGui::GetIO().Fonts->AddFontFromMemoryCompressedTTF(
-      cousine_regular_compressed_data, cousine_regular_compressed_size, 18);
+  ImGui::StyleColorsLight(&ImGui::GetStyle());
+
+  set_content_scale();
 
   return true;
 }
@@ -41,5 +42,15 @@ void UIContext::shutdown() {
   ImGui_ImplOpenGL3_Shutdown();
   ImGui_ImplGlfw_Shutdown();
   ImGui::DestroyContext();
+}
+
+void UIContext::set_content_scale() {
+  GLFWmonitor *primary = glfwGetPrimaryMonitor();
+
+  glfwGetMonitorContentScale(primary, &content_scale_x, &content_scale_y);
+  // Load custom fonts
+  ImFont *font = ImGui::GetIO().Fonts->AddFontFromMemoryCompressedTTF(
+      cousine_regular_compressed_data, cousine_regular_compressed_size,
+      16 * content_scale_x / content_scale_y);
 }
 } // namespace NRender

@@ -7,6 +7,7 @@ namespace NSystem {
 class NetToolSystem : public IBaseSystem {
 public:
   NetToolSystem();
+  ~NetToolSystem();
   void update(std::unique_ptr<ApplicationData> &application_data) override;
   void shutdown() override;
 

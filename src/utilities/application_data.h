@@ -1,7 +1,9 @@
 #pragma once
 #include "nlohmann/json.hpp"
 #include "pch.h"
+#include "systems/logger.h"
 #include <sstream>
+
 
 using nlohmann::json;
 

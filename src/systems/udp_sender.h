@@ -9,6 +9,7 @@
 #include "asio/post.hpp"
 #include "asio/ts/buffer.hpp"
 #include "asio/ts/internet.hpp"
+#include "logger.h"
 #include <iostream>
 #include <mutex>
 #include <queue>
@@ -30,7 +31,8 @@ public:
 private:
   enum STATE { INITIALIZED, RUNNING, STOPPED };
   STATE state;
-  void log_error(const asio::error_code &ec);
+  void log_error(const char *message);
+  void log_info(const char *message);
   void do_send();
 
   std::unique_ptr<asio::io_context> io_context;

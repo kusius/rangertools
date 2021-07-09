@@ -17,9 +17,10 @@ void NetToolSystem::update(std::unique_ptr<ApplicationData> &application_data) {
   if (udp_sender_should_run) {
 
     if (udp_sender->stopped()) {
-
+      NetworkInterface interface = {};
+      application_data->get_selected_interface(interface);
       bool ok = udp_sender->init(application_data->multicast_ip,
-                                 application_data->multicast_port);
+                                 application_data->multicast_port, interface);
       if (ok) {
         udp_sender->start();
       } else {
@@ -29,18 +30,19 @@ void NetToolSystem::update(std::unique_ptr<ApplicationData> &application_data) {
       }
     }
   } else if (!udp_sender->stopped()) {
-
+    // TODO: Put logic in appdata function
     udp_sender->stop();
+  }
+
+  if (application_data->interface_selection) {
+    application_data->interfaces = udp_sender->get_avaible_interfaces();
   }
 
   // We get the message clicked in the UI and send it
   if (!udp_sender->stopped()) {
-    if (application_data->message_clicked >= 0) {
-      std::string message =
-          application_data->messages.at(application_data->message_clicked)
-              .payload;
-      application_data->message_clicked = -1;
-      udp_sender->enqueue_message(message);
+    NetworkMessage message;
+    if (application_data->get_clicked_message(message)) {
+      udp_sender->enqueue_message(message.payload);
     }
   }
 }

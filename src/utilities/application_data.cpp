@@ -31,4 +31,29 @@ void ApplicationData::network_messages_from_json(const char *path) {
   }
 }
 
+bool ApplicationData::get_clicked_message(NetworkMessage &out) {
+  if (message_clicked >= 0 && message_clicked < messages.size()) {
+    out             = messages.at(message_clicked);
+    message_clicked = -1;
+    return true;
+  } else {
+    out = {};
+    return false;
+  }
+}
+
+void ApplicationData::set_clicked_message(int index) {
+  message_clicked = index;
+}
+
+bool ApplicationData::get_selected_interface(NetworkInterface &out) {
+  if (interface_selected >= 0 && interface_selected < interfaces.size()) {
+    out = interfaces.at(interface_selected);
+    return true;
+  } else {
+    out = {};
+    return false;
+  }
+}
+
 } // namespace NAppData

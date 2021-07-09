@@ -12,6 +12,10 @@ std::shared_ptr<Logger> Logger::getInstance() {
   return Log;
 }
 
+void Logger::log_info(const char *info) { write(Level::INFO, info); }
+
+void Logger::log_error(const char *error) { write(Level::ERR, error); }
+
 void Logger::clear() {
   buffer.clear();
   line_offsets.clear();

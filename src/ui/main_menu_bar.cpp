@@ -40,7 +40,7 @@ void MainMenuBar::render() {
     ImGui::ShowMetricsWindow(&mShowMetrics);
   if (mShowStyling) {
     ImGui::Begin("Dear ImGui Style Editor", &mShowStyling);
-    ImGui::ShowStyleEditor();
+    ImGui::ShowStyleEditor(&ImGui::GetStyle());
     ImGui::End();
   }
 }

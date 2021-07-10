@@ -24,9 +24,9 @@ void ApplicationData::network_messages_from_json(const char *path) {
         NetworkMessage message = j.get<NetworkMessage>();
         messages.push_back(message);
       }
-    } catch (std::exception exception) {
-      // TODO: Logger mechanism
-      std::cout << exception.what() << std::endl;
+    } catch (json::exception exception) {
+      NSystem::Logger::getInstance()->write(NSystem::Logger::Level::ERR,
+                                            exception.what());
     }
   }
 }

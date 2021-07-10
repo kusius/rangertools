@@ -12,5 +12,11 @@ public:
   void post_render() override;
 
   void shutdown() override;
+
+  void set_content_scale();
+
+private:
+  float content_scale_x;
+  float content_scale_y;
 };
 } // namespace NRender

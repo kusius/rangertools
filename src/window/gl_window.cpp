@@ -23,12 +23,15 @@ void GLWindow::render(std::unique_ptr<ApplicationData> &application_data) {
 
   mMainMenuBar->render();
   mNetToolPanel->render(application_data);
+  mLoggerPanel->render();
 
   mUIContext->post_render();
   mRenderContext->post_render();
 }
 
 void GLWindow::on_close() { mIsRunning = false; }
+
+void GLWindow::on_framebuffer_resize(int width, int height) {}
 
 void GLWindow::on_resize(int width, int height) {
   Width  = width;
@@ -38,6 +41,7 @@ void GLWindow::on_resize(int width, int height) {
   mUIContext->pre_render();
 
   mMainMenuBar->render();
+  mLoggerPanel->render();
 
   mUIContext->post_render();
   mRenderContext->post_render();

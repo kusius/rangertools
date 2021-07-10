@@ -1,6 +1,7 @@
 #include "udp_sender.h"
 
 const int max_message_count = 100000;
+
 namespace NSystem {
 UdpSender::UdpSender() : state(STOPPED) {
   io_context = std::make_unique<asio::io_context>();
@@ -20,9 +21,9 @@ void UdpSender::do_send() {
 
     socket->async_send_to(asio::buffer(std::move(*message)), *endpoint,
                           [this](std::error_code ec, std::size_t length) {
-                            // TODO: log if error sending message
-                            std::cout << "sent " << length << " bytes"
-                                      << std::endl;
+                            if (ec) {
+                              log_error(ec.message().c_str());
+                            }
                           });
   }
 
@@ -37,7 +38,9 @@ bool UdpSender::init(const std::string &ip_address, const int &port) {
 
   auto multicast_address = asio::ip::make_address(ip_address, ec);
   if (ec) {
-    log_error(ec);
+    std::stringstream message;
+    message << "Error parsing address: " + ip_address;
+    log_error(message.str().c_str());
     return false;
   }
 
@@ -68,7 +71,7 @@ void UdpSender::start() {
       std::lock_guard<std::mutex> lock(exit_mutex);
       exit_promise.set_value();
     }
-    std::cout << "ASIO thread finished OK" << std::endl;
+    log_info("Asio thread finished OK");
   });
 
   thread.detach();
@@ -78,7 +81,7 @@ void UdpSender::stop() {
   io_context->stop();
   auto exit_status = exit_future.wait_for(std::chrono::seconds(3));
   if (exit_status == std::future_status::timeout)
-    std::cout << "thread exit timeout" << std::endl;
+    log_error("Asio thread exit timeout");
   state = STOPPED;
 }
 
@@ -90,8 +93,12 @@ void UdpSender::enqueue_message(const std::string &message) {
   asio::post(*io_context, [this] { do_send(); });
 }
 
-void UdpSender::log_error(const asio::error_code &ec) {
-  std::cout << "[error][UdpSender]: " << ec.message() << std::endl;
+void UdpSender::log_error(const char *message) {
+  Logger::getInstance()->write(Logger::Level::ERR, message);
+}
+
+void UdpSender::log_info(const char *message) {
+  Logger::getInstance()->write(Logger::Level::INFO, message);
 }
 
 } // namespace NSystem

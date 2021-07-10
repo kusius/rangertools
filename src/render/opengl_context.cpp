@@ -21,6 +21,13 @@ static void on_window_resize_callback(GLFWwindow *window, int width,
   pWindow->on_resize(width, height);
 }
 
+static void on_framebuffer_resize_callback(GLFWwindow *window, int width,
+                                           int height) {
+  NWindow::IWindow *pWindow =
+      static_cast<NWindow::IWindow *>(glfwGetWindowUserPointer(window));
+  pWindow->on_framebuffer_resize(width, height);
+}
+
 bool OpenGLContext::init(NWindow::IWindow *window) {
   __super::init(window);
 
@@ -44,6 +51,7 @@ bool OpenGLContext::init(NWindow::IWindow *window) {
   glfwSetErrorCallback(glfw_error_callback);
   glfwSetWindowCloseCallback(glWindow, on_window_close_callback);
   glfwSetWindowSizeCallback(glWindow, on_window_resize_callback);
+  glfwSetFramebufferSizeCallback(glWindow, on_framebuffer_resize_callback);
   glfwMakeContextCurrent(glWindow);
   glfwSwapInterval(1); // vsync
 

@@ -1,5 +1,6 @@
 #include "render/opengl_context.h"
 #include "render/ui_context.h"
+#include "ui/logger_panel.h"
 #include "ui/main_menu_bar.h"
 #include "ui/nettool_panel.h"
 #include "window.h"
@@ -16,10 +17,12 @@ public:
   GLWindow() : mIsRunning(true), mWindow(nullptr) {
     mRenderContext = std::make_unique<OpenGLContext>();
     mUIContext     = std::make_unique<UIContext>();
-    mNetToolPanel  = std::make_shared<NetToolPanel>();
     mMainMenuBar   = std::make_unique<MainMenuBar>();
+    mNetToolPanel  = std::make_shared<NetToolPanel>();
+    mLoggerPanel   = std::make_unique<LoggerPanel>();
 
     mMainMenuBar->add_menu_item(mNetToolPanel);
+    mMainMenuBar->add_menu_item(mLoggerPanel);
   }
 
   ~GLWindow();
@@ -36,12 +39,16 @@ public:
 
   void on_resize(int width, int height) override;
 
+  void on_framebuffer_resize(int width, int height) override;
+
   void render(std::unique_ptr<ApplicationData> &application_data);
 
 private:
   GLFWwindow *mWindow;
 
   std::shared_ptr<NetToolPanel> mNetToolPanel;
+
+  std::shared_ptr<LoggerPanel> mLoggerPanel;
 
   std::unique_ptr<MainMenuBar> mMainMenuBar;
 

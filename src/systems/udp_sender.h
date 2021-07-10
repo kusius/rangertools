@@ -10,6 +10,7 @@
 #include "asio/ts/buffer.hpp"
 #include "asio/ts/internet.hpp"
 #include "logger.h"
+#include "utilities/application_data.h"
 #include <iostream>
 #include <mutex>
 #include <queue>
@@ -22,11 +23,13 @@ class UdpSender {
 public:
   UdpSender();
   ~UdpSender();
-  bool init(const std::string &ip_address, const int &port);
+  bool init(const std::string &ip_address, const int &port,
+            const NAppData::NetworkInterface &interface);
   void start();
   void stop();
   void enqueue_message(const std::string &message);
   bool stopped() { return state == STOPPED; }
+  std::vector<NAppData::NetworkInterface> get_avaible_interfaces();
 
 private:
   enum STATE { INITIALIZED, RUNNING, STOPPED };

@@ -35,6 +35,10 @@ public:
 
   void write(Level level, const char *fmt, ...) IM_FMTARGS(2);
 
+  void log_info(const char *info);
+
+  void log_error(const char *error);
+
   void clear();
 
   ImGuiTextBuffer &get_buffer();
@@ -69,7 +73,7 @@ private:
 
   std::map<Level, Vec4> level_color_map = {
       {Level::DEBUG, Vec4(0.99f, 0.96f, 0.012f, 1.0f)},
-      {Level::WARNING, Vec4(0.99f, 0.96f, 0.012f, 1.0f)},
+      {Level::WARNING, Vec4(0.99f, 0.66f, 0.012f, 1.0f)},
       {Level::ERR, Vec4(0.99f, 0.012f, 0.73f, 1.0f)},
       {Level::CRIT, Vec4(1.0f, 0.0f, 0.0f, 1.0f)},
   };

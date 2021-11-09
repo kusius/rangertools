@@ -9,7 +9,7 @@ namespace NUI {
 class LoggerPanel : public IMenuItem {
 public:
   LoggerPanel();
-  void render();
+  void render(int windowWindth, int windowHeight);
 
 private:
   void clear();

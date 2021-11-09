@@ -12,7 +12,6 @@ UdpSender::UdpSender() : state(STOPPED) {
 UdpSender::~UdpSender() { stop(); }
 
 void UdpSender::do_send() {
-  Logger::getInstance()->log_info("do_send()");
   // Grab a message from the data queue and send it through the socket
   std::unique_lock<std::mutex> lock(*data_mutex);
   if (!data_queue->empty()) {

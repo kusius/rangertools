@@ -27,6 +27,7 @@ public:
 
   char multicast_ip[16] = "224.0.0.0";
   int multicast_port    = 5555;
+  std::string message_file_path;
 
 private:
   int message_clicked = -1;

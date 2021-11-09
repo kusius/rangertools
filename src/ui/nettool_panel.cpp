@@ -27,10 +27,6 @@ void NetToolPanel::render(std::unique_ptr<ApplicationData> &application_data) {
 
 inline void NetToolPanel::make_udp_sender_ui(
     std::unique_ptr<ApplicationData> &application_data) {
-  auto messages = application_data->messages;
-
-  int buttons_count = 9;
-  ImVec2 button_size(40, 40);
 
   ImGui::Text("UDP multicast sender");
   ImGui::SameLine();
@@ -50,41 +46,9 @@ inline void NetToolPanel::make_udp_sender_ui(
 
   make_interface_selection(application_data);
 
-  // File dialog
-  if (ImGui::Button("Import from file")) {
-    ImGuiFileDialog::Instance()->OpenModal("ChooseFileDlgKey", "Choose File",
-                                           ".json", ".");
-  }
+  make_file_chooser(application_data);
 
-  if (ImGuiFileDialog::Instance()->Display("ChooseFileDlgKey")) {
-    // action if OK
-    if (ImGuiFileDialog::Instance()->IsOk()) {
-      std::string filePathName = ImGuiFileDialog::Instance()->GetFilePathName();
-      application_data->network_messages_from_json(filePathName.c_str());
-    }
-
-    // close
-    ImGuiFileDialog::Instance()->Close();
-  }
-
-  // Buttons for different message types
-  for (int i = 0; i < messages.size(); ++i) {
-    ImGuiStyle &style = ImGui::GetStyle();
-    ImGui::PushID(i);
-
-    if (ImGui::Button(messages.at(i).name.c_str())) {
-      application_data->set_clicked_message(i);
-    }
-
-    float last_button_x2 = ImGui::GetItemRectMax().x;
-    float next_button_x2 = last_button_x2 + style.ItemSpacing.x + button_size.x;
-    float window_visible_x2 =
-        ImGui::GetWindowPos().x + ImGui::GetWindowContentRegionMax().x;
-    if (i + 1 < buttons_count && next_button_x2 < window_visible_x2)
-      ImGui::SameLine();
-
-    ImGui::PopID();
-  }
+  make_message_buttons(application_data);
 }
 
 inline void NetToolPanel::make_interface_selection(
@@ -119,6 +83,63 @@ inline void NetToolPanel::make_interface_selection(
     ImGui::EndCombo();
   } else {
     application_data->interface_selection = false;
+  }
+}
+
+inline void NetToolPanel::make_message_buttons(
+    std::unique_ptr<ApplicationData> &application_data) {
+  auto messages     = application_data->messages;
+  int buttons_count = 9;
+  ImVec2 button_size(40, 40);
+
+  // Buttons for different message types
+  for (int i = 0; i < messages.size(); ++i) {
+    ImGuiStyle &style = ImGui::GetStyle();
+    ImGui::PushID(i);
+
+    if (ImGui::Button(messages.at(i).name.c_str())) {
+      application_data->set_clicked_message(i);
+    }
+
+    float last_button_x2 = ImGui::GetItemRectMax().x;
+    float next_button_x2 = last_button_x2 + style.ItemSpacing.x + button_size.x;
+    float window_visible_x2 =
+        ImGui::GetWindowPos().x + ImGui::GetWindowContentRegionMax().x;
+    if (i + 1 < buttons_count && next_button_x2 < window_visible_x2)
+      ImGui::SameLine();
+
+    ImGui::PopID();
+  }
+}
+
+inline void NetToolPanel::make_file_chooser(
+    std::unique_ptr<ApplicationData> &application_data) {
+  // File dialog
+  if (ImGui::Button("Import from file")) {
+    ImGuiFileDialog::Instance()->OpenModal("ChooseFileDlgKey", "Choose File",
+                                           ".json", ".");
+  }
+
+  if (ImGuiFileDialog::Instance()->Display("ChooseFileDlgKey")) {
+    // action if OK
+    if (ImGuiFileDialog::Instance()->IsOk()) {
+      application_data->message_file_path =
+          ImGuiFileDialog::Instance()->GetFilePathName();
+      application_data->network_messages_from_json(
+          application_data->message_file_path.c_str());
+    }
+
+    // close
+    ImGuiFileDialog::Instance()->Close();
+  }
+
+  // Refresh file loading button
+  ImGui::SameLine();
+  ImGui::Text(application_data->message_file_path.c_str());
+  ImGui::SameLine();
+  if (ImGui::Button("Reload")) {
+    application_data->network_messages_from_json(
+        application_data->message_file_path.c_str());
   }
 }
 

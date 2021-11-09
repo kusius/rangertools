@@ -2,6 +2,8 @@
 
 namespace NUI {
 
+const float verticalPercentPlacement = 0.35f;
+
 LoggerPanel::LoggerPanel()
 
 {
@@ -10,12 +12,18 @@ LoggerPanel::LoggerPanel()
   mIsSelected   = false;
 }
 
-void LoggerPanel::render() {
+void LoggerPanel::render(int windowWidth, int windowHeight) {
   if (!mIsSelected)
     return;
 
+  float panelHeight = (verticalPercentPlacement * windowHeight);
+  // Make the size of the panel fill the window length-wise and
+  ImGui::SetNextWindowSize(ImVec2((float)windowWidth, panelHeight));
+  ImGui::SetNextWindowPos(ImVec2(0, (float)windowHeight - panelHeight));
   // Begin drawing the window
-  if (!ImGui::Begin("Global log", &mIsSelected)) {
+  if (!ImGui::Begin("Global log", &mIsSelected,
+                    ImGuiWindowFlags_NoResize |
+                        ImGuiWindowFlags_NoDecoration)) {
     ImGui::End();
     return;
   }
@@ -51,6 +59,7 @@ void LoggerPanel::render() {
     logger->clear();
   if (copy)
     ImGui::LogToClipboard();
+  std::cout << "This is a test string" << std::endl;
 
   ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(0, 0));
   const char *buf     = buffer.begin();
